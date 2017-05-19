@@ -1,3 +1,8 @@
+### Forked from https://github.com/FrederikS/richie in order to add certain features I wanted in an application I was using.
+#### What I added so far
+
+* Default Value for editor that takes plain text or rawContent
+
 ## Demo
 
 http://frederiks.github.io/richie/
@@ -10,7 +15,7 @@ http://frederiks.github.io/richie/
 ```
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Editor } from 'richie';
+import { Editor } from 'richie/index';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -24,7 +29,9 @@ const handleImageFile = (file, callback) => {
 
 ReactDOM.render(
     <MuiThemeProvider muiTheme={getMuiTheme()}>
-        <Editor handleImageFile={handleImageFile} />
+        <Editor
+          defaultValue="This can be text or stringified RawContent"
+          handleImageFile={handleImageFile} />
     </MuiThemeProvider>,
     document.getElementById('editor')
 );     
@@ -55,6 +62,30 @@ ReactDOM.render(
     <Editor onChange={renderOutput} />,
     document.getElementById('editor')
 );
+```
+You can also provide a default value now.
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Editor } from 'richie/index';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+const handleImageFile = (file, callback) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        callback(e.target.result);
+    };
+    reader.readAsDataURL(file);
+};
+
+ReactDOM.render(
+    <MuiThemeProvider muiTheme={getMuiTheme()}>
+        <Editor handleImageFile={handleImageFile} />
+    </MuiThemeProvider>,
+    document.getElementById('editor')
+);     
+
 ```
 
 ## Peer-Dependencies
