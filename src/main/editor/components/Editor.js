@@ -2,9 +2,11 @@ import React from 'react';
 import {
     Editor,
     EditorState,
+    ContentState,
     RichUtils,
     AtomicBlockUtils,
     convertToRaw,
+    convertFromRaw,
     CompositeDecorator
 } from 'draft-js';
 import InlineStyleControls from '../components/controls/InlineStyleControls';
@@ -110,6 +112,19 @@ class MyEditor extends React.Component {
         );
         this.onChange(EditorState.push(editorState, contentWithMovedBlock, 'insert-fragment'));
         return true;
+    }
+    componentWillMount(){
+      if(!this.props.defaultValue){
+        return;
+      }
+      var content;
+      try{
+        content = convertFromRaw(JSON.parse(this.props.defaultValue))
+      } catch( e) {
+        content = ContentState.createFromText((this.props.defaultValue))
+      }
+      this.setState({editorState: EditorState.push(this.state.editorState,content,new CompositeDecorator([LinkDecorator]))})
+      console.log(this.props.defaultValue);
     }
 
     render() {
