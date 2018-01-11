@@ -8,6 +8,13 @@ import { Editor, Preview } from '../../index';
 
 injectTapEventPlugin();
 
+const muiTheme = getMuiTheme({
+    palette: {
+        alternateTextColor: 'black',
+        disabledColor: '#767676'
+    }
+});
+
 const handleImageFile = (file, callback) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -21,7 +28,7 @@ const renderOutput = (rawContent) => {
 };
 
 ReactDOM.render((
-    <MuiThemeProvider muiTheme={getMuiTheme()}>
+    <MuiThemeProvider muiTheme={muiTheme}>
         <Editor handleImageFile={handleImageFile} onChange={renderOutput} />
     </MuiThemeProvider>
 ), document.getElementById('editor'));

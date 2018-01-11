@@ -1,3 +1,4 @@
+// /* eslint-disable */
 import React from 'react';
 import {
     Editor,
@@ -38,6 +39,23 @@ class MyEditor extends React.Component {
         this.state = {
             editorState: EditorState.createEmpty(new CompositeDecorator([LinkDecorator]))
         };
+    }
+
+    componentWillMount() {
+        if (!this.props.defaultValue) {
+            return;
+        }
+        let content;
+        try {
+            content = convertFromRaw(JSON.parse(this.props.defaultValue));
+        } catch (e) {
+            content = ContentState.createFromText((this.props.defaultValue));
+        }
+        this.setState({
+            editorState: EditorState.push(this.state.editorState,
+              content, new CompositeDecorator([LinkDecorator]))
+        });
+        console.log(this.props.defaultValue);
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -113,19 +131,6 @@ class MyEditor extends React.Component {
         this.onChange(EditorState.push(editorState, contentWithMovedBlock, 'insert-fragment'));
         return true;
     }
-    componentWillMount(){
-      if(!this.props.defaultValue){
-        return;
-      }
-      var content;
-      try{
-        content = convertFromRaw(JSON.parse(this.props.defaultValue))
-      } catch( e) {
-        content = ContentState.createFromText((this.props.defaultValue))
-      }
-      this.setState({editorState: EditorState.push(this.state.editorState,content,new CompositeDecorator([LinkDecorator]))})
-      console.log(this.props.defaultValue);
-    }
 
     render() {
         const { editorState } = this.state;
@@ -172,7 +177,8 @@ class MyEditor extends React.Component {
 
 MyEditor.propTypes = {
     handleImageFile: React.PropTypes.func.isRequired,
-    onChange: React.PropTypes.func
+    onChange: React.PropTypes.func,
+    defaultValue: React.PropTypes.string
 };
 
 MyEditor.defaultProps = {
